@@ -70,6 +70,7 @@ woot
 library(data.table)
 dt<-data.table(data)
 dayMeans<-dt[,list(mean=mean(steps)),by=date]
+
 hist(dayMeans$mean)
 ```
 
@@ -92,21 +93,44 @@ median(dayMeans$mean, na.rm=TRUE)
 ## [1] 37.37847
 ```
 
-##What is the average daily activity patter?
+##What is the average daily activity pattern?
 
 1. Make a timeseries chart of the 5 minute interval and the average number of steps taken averaged across all days.
 2. Which 5 minute interval has the highest average number of steps across all days?
 
-seems an awful lot like the second group of instructions...
+1. making a chart in base.
+
+2. just sort on desc intervalMeans
 
 
 ```r
 intervalMeans<-dt[,list(mean=mean(steps,na.rm=TRUE)),by=interval]
 
+
 plot(intervalMeans$mean~intervalMeans$interval,type="l")
 ```
 
 ![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png) 
+
+```r
+#top interval
+intervalMeans[order(-intervalMeans$mean),]
+```
+
+```
+##      interval     mean
+##   1:      835 206.1698
+##   2:      840 195.9245
+##   3:      850 183.3962
+##   4:      845 179.5660
+##   5:      830 177.3019
+##  ---                  
+## 284:      350   0.0000
+## 285:      355   0.0000
+## 286:      415   0.0000
+## 287:      500   0.0000
+## 288:     2310   0.0000
+```
 
 ## Imputing Missing Values
 
@@ -147,20 +171,20 @@ and that was 3 as well incidentally:
 data.nafix is now our dataset with the missing data filled in
 
 4.
-you might not be surprised that we now have differend medians and means by day:
+filling in means is kinda nice, doesn't change the mean.:
 
 
 
 ```r
 dt<-data.table(data.nafix)
 dayMeans<-dt[,list(mean=mean(steps)),by=date]
+
 hist(dayMeans$mean)
 ```
 
 ![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7-1.png) 
 
 ```r
-# we still have na's :(
 mean(dayMeans$mean, na.rm=TRUE)
 ```
 
@@ -177,10 +201,6 @@ median(dayMeans$mean, na.rm=TRUE)
 ```
 
 
-for a bit of deeper insight, we could have avoided this impact of course by imputing by the daily
-mean/median (somwhat unsurprisingly)
-
-
 ##Are there differences in activity patterns between weekdays and weekends?
 
 --yes... har har
@@ -192,7 +212,8 @@ mean/median (somwhat unsurprisingly)
 data$weekday <- ifelse(weekdays(as.Date(data$date))=="Saturday"|weekdays(as.Date(data$date))=="Sunday","weekend","weekday")
 ```
 
-2. Now just split the earlier graph into two on the factor basically...
+2. Now just split the earlier graph into two on the factor basically... using mfrow to do this, because simple base graphics
+
 
 
 ```r
