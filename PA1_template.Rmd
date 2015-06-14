@@ -92,6 +92,9 @@ naCount<-nrow(data)-nrow(data[which(complete.cases(data)),])
 
 2. Devise a strategy... we'll just put the median by interval. Seems easier...
 
+Basically for each na we'll reference our intervalMeans table telling the mean for each interval,
+fill the na and move on.
+
 ```{r}
 # I should be more clever than a for loop here... but, I wont be.
 data.nafix <- data

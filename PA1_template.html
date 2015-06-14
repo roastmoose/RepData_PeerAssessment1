@@ -338,6 +338,9 @@ intervalMeans[order(-intervalMeans$mean),]
 <li>Devise a strategy&hellip; we&#39;ll just put the median by interval. Seems easier&hellip;</li>
 </ol>
 
+<p>Basically for each na we&#39;ll reference our intervalMeans table telling the mean for each interval,
+fill the na and move on.</p>
+
 <pre><code class="r"># I should be more clever than a for loop here... but, I wont be.
 data.nafix &lt;- data
 
